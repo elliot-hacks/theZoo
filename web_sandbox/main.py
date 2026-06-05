@@ -33,8 +33,16 @@ from imports import manysearches
 __version__ = "0.1.0"
 __appname__ = "theZoo Web Sandbox"
 
-# Templates directory
-templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
+# Templates directory - configure Jinja2 to disable caching for compatibility
+from jinja2 import FileSystemLoader, Environment
+
+# Create a custom Jinja2 environment with no caching
+jinja_env = Environment(
+    loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "templates")),
+    autoescape=True,
+    cache_size=0  # Disable caching
+)
+templates = Jinja2Templates(env=jinja_env)
 
 # Global database connection
 db: Optional[DBHandler] = None
