@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>🔍 Search Malware Database</h2>
+    <p style="color: var(--light-text); margin-bottom: 20px;">
+        Search through the malware database using keywords, types, platforms, architectures, languages, or tags.
+        You can combine multiple search terms for more specific results.
+    </p>
+
+    <!-- Search Form -->
+    <form action="/search" method="get" class="search-box">
+        <input type="text" name="q" placeholder="e.g., ransomware win32, trojan cpp, wannacry..." value="{{ query }}" style="flex: 1;">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- Search Tips -->
+    <div class="alert alert-info mt-20">
+        <h4 style="margin-bottom: 10px; color: var(--info-color);">💡 Search Tips</h4>
+        <ul style="margin-left: 20px; line-height: 1.8;">
+            <li>Search by <strong>malware name</strong>: <code>wannacry</code>, <code>mirai</code>, <code>petya</code></li>
+            <li>Search by <strong>type</strong>: <code>virus</code>, <code>worm</code>, <code>ransomware</code>, <code>trojan</code>, <code>botnet</code>, <code>apt</code>, <code>rootkit</code></li>
+            <li>Search by <strong>platform</strong>: <code>win32</code>, <code>win64</code>, <code>android</code>, <code>linux</code>, <code>mac</code></li>
+            <li>Search by <strong>architecture</strong>: <code>x86</code>, <code>x64</code>, <code>arm</code>, <code>web</code></li>
+            <li>Search by <strong>language</strong>: <code>c</code>, <code>cpp</code>, <code>asm</code>, <code>java</code>, <code>vb</code>, <code>python</code></li>
+            <li><strong>Combine terms</strong>: <code>ransomware win32</code>, <code>trojan cpp x86</code></li>
+        </ul>
+    </div>
+
+    <!-- Search Results -->
+    {% if query %}
+    <div class="mt-20">
+        <h3>📋 Search Results for "{{ query }}"</h3>
+        
+        {% if results %}
+        <p style="color: var(--light-text); margin-bottom: 15px;">
+            Found <strong>{{ results|length }}</strong> matching malware entries.
+        </p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Platform</th>
+                        <th>Architecture</th>
+                        <th>Language</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td><strong>{{ result.id }}</strong></td>
+                        <td>{{ result.name or 'N/A' }}</td>
+                        <td>
+                            {% if result.type %}
+                            <span class="badge badge-type">{{ result.type }}</span>
+                            {% else %}
+                            <span style="color: var(--light-text);">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result.platform %}
+                            <span class="badge badge-platform">{{ result.platform }}</span>
+                            {% else %}
+                            <span style="color: var(--light-text);">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result.architecture %}
+                            <span class="badge badge-arch">{{ result.architecture }}</span>
+                            {% else %}
+                            <span style="color: var(--light-text);">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if result.language %}
+                            <span class="badge badge-lang">{{ result.language }}</span>
+                            {% else %}
+                            <span style="color: var(--light-text);">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/malware/{{ result.id }}" class="btn btn-sm btn-primary">Details</a>
+                            <a href="/download/{{ result.id }}" class="btn btn-sm btn-warning">Download</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex gap-10 mt-20">
+            <a href="/browse" class="btn btn-primary">Browse All Malwares</a>
+            <a href="/" class="btn btn-danger">Back to Dashboard</a>
+        </div>
+
+        {% else %}
+        <div class="alert alert-warning mt-20">
+            <strong>⚠️ No results found.</strong>
+            <p style="margin-top: 10px;">
+                Your search "{{ query }}" did not match any malware entries. Try different keywords or browse the database instead.
+            </p>
+            <div class="flex gap-10 mt-15">
+                <a href="/browse" class="btn btn-primary">Browse All Malwares</a>
+                <a href="/" class="btn btn-danger">Back to Dashboard</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <!-- No query yet - show featured/suggested searches -->
+    <div class="grid grid-3 mt-20">
+        <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+            <h4 style="color: var(--info-color);">🔥 Popular Searches</h4>
+            <div class="mt-10">
+                <a href="/search?q=ransomware" class="badge badge-type" style="text-decoration: none; margin: 5px;">Ransomware</a>
+                <a href="/search?q=trojan" class="badge badge-type" style="text-decoration: none; margin: 5px;">Trojan</a>
+                <a href="/search?q=botnet" class="badge badge-type" style="text-decoration: none; margin: 5px;">Botnet</a>
+                <a href="/search?q=worm" class="badge badge-type" style="text-decoration: none; margin: 5px;">Worm</a>
+            </div>
+        </div>
+        <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+            <h4 style="color: var(--info-color);">💻 By Platform</h4>
+            <div class="mt-10">
+                <a href="/search?q=win32" class="badge badge-platform" style="text-decoration: none; margin: 5px;">Windows 32-bit</a>
+                <a href="/search?q=win64" class="badge badge-platform" style="text-decoration: none; margin: 5px;">Windows 64-bit</a>
+                <a href="/search?q=android" class="badge badge-platform" style="text-decoration: none; margin: 5px;">Android</a>
+                <a href="/search?q=linux" class="badge badge-platform" style="text-decoration: none; margin: 5px;">Linux</a>
+            </div>
+        </div>
+        <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+            <h4 style="color: var(--info-color);">🔧 By Language</h4>
+            <div class="mt-10">
+                <a href="/search?q=c" class="badge badge-lang" style="text-decoration: none; margin: 5px;">C</a>
+                <a href="/search?q=cpp" class="badge badge-lang" style="text-decoration: none; margin: 5px;">C++</a>
+                <a href="/search?q=python" class="badge badge-lang" style="text-decoration: none; margin: 5px;">Python</a>
+                <a href="/search?q=java" class="badge badge-lang" style="text-decoration: none; margin: 5px;">Java</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- API Usage Info -->
+<div class="card mt-20">
+    <h2>🔌 API Access</h2>
+    <p style="color: var(--light-text); margin-bottom: 15px;">
+        You can also access search results programmatically via our REST API.
+    </p>
+    <code style="background: var(--light-bg); padding: 12px 15px; border-radius: 4px; display: block; margin-bottom: 10px;">
+        GET /api/malwares/search?q={{ query if query else 'your_search_term' }}
+    </code>
+    <a href="/documentation" class="btn btn-sm btn-primary">View API Documentation</a>
+</div>
+{% endblock %}

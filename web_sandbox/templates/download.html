@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>⬇️ Download Malware Sample</h2>
+    
+    <!-- Critical Warning Banner -->
+    <div class="alert alert-danger" style="border-left-width: 6px;">
+        <h3 style="color: var(--danger-color); margin-bottom: 15px;">🚨 CRITICAL SECURITY WARNING 🚨</h3>
+        <p style="font-size: 16px; line-height: 1.8;">
+            <strong>You are about to download a LIVE MALWARE sample.</strong> This file is dangerous and can:
+        </p>
+        <ul style="margin-left: 20px; line-height: 2; margin-top: 10px;">
+            <li>❌ <strong>Infect your computer</strong> and steal sensitive data</li>
+            <li>❌ <strong>Spread automatically</strong> to other machines on your network</li>
+            <li>❌ <strong>Corrupt or delete files</strong> permanently</li>
+            <li>❌ <strong>Install backdoors</strong> for remote access</li>
+            <li>❌ <strong>Encrypt your files</strong> and demand ransom</li>
+        </ul>
+    </div>
+
+    <!-- Malware Info -->
+    <div style="background: var(--light-bg); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-bottom: 10px;">Sample Information</h3>
+        <p><strong>Name:</strong> {{ malware_name }}</p>
+        <p><strong>ID:</strong> #{{ mal_id }}</p>
+        {% if location %}
+        <p><strong>Location:</strong> <code>{{ location }}</code></p>
+        {% endif %}
+    </div>
+
+    <!-- Safety Checklist -->
+    <div class="card" style="box-shadow: none; border: 2px solid var(--warning-color);">
+        <h3 style="color: var(--warning-color);">✅ Safety Checklist - Confirm Before Downloading</h3>
+        <p style="color: var(--light-text); margin-bottom: 15px;">
+            Before proceeding, confirm that you have:
+        </p>
+        <ul style="margin-left: 20px; line-height: 2.2;">
+            <li>☐ Set up an <strong>isolated virtual machine</strong> (no network access)</li>
+            <li>☐ Disabled <strong>shared folders</strong> between VM and host</li>
+            <li>☐ Ensured <strong>no internet connection</strong> to the VM</li>
+            <li>☐ Understood that this is for <strong>educational purposes only</strong></li>
+            <li>☐ Accepted full <strong>responsibility</strong> for safe handling</li>
+            <li>☐ Will <strong>never share</strong> this sample with others</li>
+        </ul>
+    </div>
+
+    <!-- What You'll Receive -->
+    <div class="grid grid-2 mt-20">
+        <div>
+            <h4>📦 Download Includes</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Encrypted ZIP</strong> - Password-protected archive</li>
+                <li><strong>Password file</strong> - Separate .pass file</li>
+                <li><strong>MD5 checksum</strong> - For integrity verification</li>
+                <li><strong>SHA256 checksum</strong> - For integrity verification</li>
+            </ul>
+        </div>
+        <div>
+            <h4>🛡️ Security Features</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li>Files are <strong>encrypted</strong> by default</li>
+                <li>Password provided <strong>separately</strong></li>
+                <li>Checksums for <strong>verification</strong></li>
+                <li>No automatic <strong>execution</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Download Button with Confirmation -->
+    <div class="mt-20 text-center">
+        <div class="alert alert-warning" style="display: inline-block; text-align: left; margin-bottom: 20px;">
+            <strong>⚠️ By clicking "Download", you confirm that:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li>You understand the risks involved</li>
+                <li>You have a proper isolated environment</li>
+                <li>You will use this for educational purposes only</li>
+                <li>You accept full responsibility for safe handling</li>
+            </ul>
+        </div>
+        <br>
+        <form action="/download/{{ mal_id }}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-danger btn-lg" style="padding: 15px 40px; font-size: 18px;">
+                ⚠️ I Understand - Download Anyway
+            </button>
+        </form>
+    </div>
+
+    <!-- Cancel Option -->
+    <div class="text-center mt-20">
+        <a href="/malware/{{ mal_id }}" class="btn btn-primary">
+            ← Back to Malware Details
+        </a>
+    </div>
+</div>
+
+<!-- Additional Resources -->
+<div class="card mt-20">
+    <h2>📚 Additional Resources</h2>
+    <div class="grid grid-2">
+        <div>
+            <h4>Safe Analysis Practices</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><a href="/documentation">Read theZoo documentation</a></li>
+                <li>Use dedicated malware analysis VMs</li>
+                <li>Follow established analysis frameworks</li>
+                <li>Document all findings carefully</li>
+            </ul>
+        </div>
+        <div>
+            <h4>Legal Considerations</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li>Only analyze malware you have rights to study</li>
+                <li>Never distribute malware samples</li>
+                <li>Report findings responsibly</li>
+                <li>Follow your organization's policies</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Emergency Information -->
+<div class="alert alert-danger mt-20">
+    <h4 style="color: var(--danger-color);">🆘 If Something Goes Wrong</h4>
+    <p style="line-height: 1.8;">
+        If you accidentally execute malware or suspect infection:
+    </p>
+    <ol style="margin-left: 20px; line-height: 2;">
+        <li><strong>Immediately disconnect</strong> from all networks</li>
+        <li><strong>Power off</strong> the infected system</li>
+        <li><strong>Do not attempt</strong> to clean without expertise</li>
+        <li><strong>Seek professional</strong> incident response help</li>
+    </ol>
+</div>
+{% endblock %}

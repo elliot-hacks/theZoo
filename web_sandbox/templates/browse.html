@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>📋 Browse Malware Database</h2>
+    <p style="color: var(--light-text); margin-bottom: 20px;">
+        Browse through all malware samples in the database. Use filters to narrow down results.
+    </p>
+
+    <!-- Filters -->
+    <div class="alert alert-info mb-20">
+        <h3 style="margin-bottom: 15px; color: var(--info-color);">🔍 Filters</h3>
+        <form action="/browse" method="get">
+            <div class="grid grid-4 gap-10">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="filter_type">Type</label>
+                    <select name="filter_type" id="filter_type" class="form-control">
+                        <option value="">All Types</option>
+                        {% for t in types %}
+                        <option value="{{ t }}" {% if filter_type == t %}selected{% endif %}>{{ t }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="filter_platform">Platform</label>
+                    <select name="filter_platform" id="filter_platform" class="form-control">
+                        <option value="">All Platforms</option>
+                        {% for p in platforms %}
+                        <option value="{{ p }}" {% if filter_platform == p %}selected{% endif %}>{{ p }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="filter_arch">Architecture</label>
+                    <select name="filter_arch" id="filter_arch" class="form-control">
+                        <option value="">All Architectures</option>
+                        {% for a in architectures %}
+                        <option value="{{ a }}" {% if filter_arch == a %}selected{% endif %}>{{ a }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="filter_lang">Language</label>
+                    <select name="filter_lang" id="filter_lang" class="form-control">
+                        <option value="">All Languages</option>
+                        {% for l in languages %}
+                        <option value="{{ l }}" {% if filter_lang == l %}selected{% endif %}>{{ l }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-10 mt-10">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <a href="/browse" class="btn btn-danger">Clear Filters</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Info -->
+    <div class="flex flex-between mb-10" style="flex-wrap: wrap; gap: 10px;">
+        <div>
+            <strong>Showing {{ malwares|length }} of {{ total_count }} entries</strong>
+            {% if filter_type or filter_platform or filter_arch or filter_lang %}
+            <span style="color: var(--light-text);"> (filtered)</span>
+            {% endif %}
+        </div>
+        <div>
+            <span style="color: var(--light-text);">Page {{ page }} of {{ total_pages }}</span>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    {% if malwares %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Platform</th>
+                    <th>Architecture</th>
+                    <th>Language</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mal in malwares %}
+                <tr>
+                    <td><strong>{{ mal[0] }}</strong></td>
+                    <td>{{ mal[5] or 'N/A' }}</td>
+                    <td>
+                        {% if mal[1] %}
+                        <span class="badge badge-type">{{ mal[1] }}</span>
+                        {% else %}
+                        <span style="color: var(--light-text);">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if mal[4] %}
+                        <span class="badge badge-platform">{{ mal[4] }}</span>
+                        {% else %}
+                        <span style="color: var(--light-text);">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if mal[3] %}
+                        <span class="badge badge-arch">{{ mal[3] }}</span>
+                        {% else %}
+                        <span style="color: var(--light-text);">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if mal[2] %}
+                        <span class="badge badge-lang">{{ mal[2] }}</span>
+                        {% else %}
+                        <span style="color: var(--light-text);">N/A</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/malware/{{ mal[0] }}" class="btn btn-sm btn-primary">Details</a>
+                        <a href="/download/{{ mal[0] }}" class="btn btn-sm btn-warning">Download</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="/browse?page={{ page - 1 }}&per_page={{ per_page }}{% if filter_type %}&filter_type={{ filter_type }}{% endif %}{% if filter_platform %}&filter_platform={{ filter_platform }}{% endif %}{% if filter_arch %}&filter_arch={{ filter_arch }}{% endif %}{% if filter_lang %}&filter_lang={{ filter_lang }}{% endif %}">← Previous</a>
+        {% endif %}
+
+        {% for p in range([1, page - 3]|max, [total_pages + 1, page + 4]|min) %}
+            {% if p == page %}
+            <span class="active">{{ p }}</span>
+            {% else %}
+            <a href="/browse?page={{ p }}&per_page={{ per_page }}{% if filter_type %}&filter_type={{ filter_type }}{% endif %}{% if filter_platform %}&filter_platform={{ filter_platform }}{% endif %}{% if filter_arch %}&filter_arch={{ filter_arch }}{% endif %}{% if filter_lang %}&filter_lang={{ filter_lang }}{% endif %}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <a href="/browse?page={{ page + 1 }}&per_page={{ per_page }}{% if filter_type %}&filter_type={{ filter_type }}{% endif %}{% if filter_platform %}&filter_platform={{ filter_platform }}{% endif %}{% if filter_arch %}&filter_arch={{ filter_arch }}{% endif %}{% if filter_lang %}&filter_lang={{ filter_lang }}{% endif %}">Next →</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-warning">
+        <strong>No malware entries found.</strong> 
+        {% if filter_type or filter_platform or filter_arch or filter_lang %}
+        Try adjusting your filters or <a href="/browse">clear all filters</a>.
+        {% else %}
+        The database appears to be empty.
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- Quick Search -->
+<div class="card mt-20">
+    <h2>🔍 Quick Search</h2>
+    <p style="color: var(--light-text); margin-bottom: 15px;">
+        Can't find what you're looking for? Try the advanced search.
+    </p>
+    <form action="/search" method="get" class="search-box">
+        <input type="text" name="q" placeholder="Search by name, type, platform, tags..." style="flex: 1;">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+{% endblock %}

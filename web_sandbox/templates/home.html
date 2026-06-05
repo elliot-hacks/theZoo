@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Welcome Alert -->
+<div class="alert alert-warning">
+    <strong>⚠️ SECURITY NOTICE:</strong> This web sandbox provides access to the theZoo malware repository. 
+    All malware samples are encrypted and password-protected. Never extract or run these files outside of 
+    a properly isolated virtual environment. Some samples are worms that can spread automatically.
+</div>
+
+<!-- Statistics Grid -->
+<div class="grid grid-4 mb-20">
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.malware_count }}</div>
+        <div class="stat-label">Malware Samples</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ zoo_version.split(' ')[0] }}</div>
+        <div class="stat-label">theZoo Version</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ version }}</div>
+        <div class="stat-label">Web Sandbox</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ 'Active' if stats.connection_active else 'Inactive' }}</div>
+        <div class="stat-label">Database Status</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card">
+    <h2>🚀 Quick Actions</h2>
+    <div class="grid grid-4 mt-20">
+        <a href="/browse" class="btn btn-primary text-center">
+            📋 Browse All<br><small>View all malware</small>
+        </a>
+        <a href="/search" class="btn btn-info text-center" style="background-color: #2980b9; color: white;">
+            🔍 Search<br><small>Find specific malware</small>
+        </a>
+        <a href="/documentation" class="btn btn-warning text-center">
+            📚 Docs<br><small>Read documentation</small>
+        </a>
+        <a href="/about" class="btn btn-success text-center">
+            ℹ️ About<br><small>License & info</small>
+        </a>
+    </div>
+</div>
+
+<!-- Recent Malwares -->
+<div class="card mt-20">
+    <h2>📋 Recent Malware Entries</h2>
+    <p style="color: var(--light-text); margin-bottom: 15px;">
+        Showing the last 10 entries added to the database.
+    </p>
+    
+    {% if recent_malwares %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Platform</th>
+                    <th>Architecture</th>
+                    <th>Language</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mal in recent_malwares %}
+                <tr>
+                    <td><strong>{{ mal[0] }}</strong></td>
+                    <td>{{ mal[5] or 'N/A' }}</td>
+                    <td>
+                        {% if mal[1] %}
+                        <span class="badge badge-type">{{ mal[1] }}</span>
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if mal[4] %}
+                        <span class="badge badge-platform">{{ mal[4] }}</span>
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if mal[3] %}
+                        <span class="badge badge-arch">{{ mal[3] }}</span>
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if mal[2] %}
+                        <span class="badge badge-lang">{{ mal[2] }}</span>
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/malware/{{ mal[0] }}" class="btn btn-sm btn-primary">Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-20">
+        <a href="/browse" class="btn btn-primary">View All Malwares →</a>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        No malware entries found in the database. The database may be empty or there was an error loading data.
+    </div>
+    {% endif %}
+</div>
+
+<!-- Safety Guidelines -->
+<div class="card mt-20">
+    <h2>🛡️ Safety Guidelines</h2>
+    <div class="grid grid-2 mt-15">
+        <div>
+            <h3 style="color: var(--danger-color);">❌ NEVER</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Run this on a production server</li>
+                <li>Extract malware without isolation</li>
+                <li>Run samples on your main OS</li>
+                <li>Share malware samples publicly</li>
+                <li>Download without understanding risks</li>
+            </ul>
+        </div>
+        <div>
+            <h3 style="color: var(--success-color);">✅ ALWAYS</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Use isolated virtual machines</li>
+                <li>Disable network access to VM</li>
+                <li>Keep samples encrypted</li>
+                <li>Follow proper safety protocols</li>
+                <li>Use for educational purposes only</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Database Info -->
+<div class="card mt-20">
+    <h2>💾 Database Information</h2>
+    <div class="grid grid-2 mt-15">
+        <div>
+            <p><strong>Database Path:</strong></p>
+            <code style="background: var(--light-bg); padding: 8px 12px; border-radius: 4px; display: inline-block;">
+                {{ stats.database_path }}
+            </code>
+        </div>
+        <div>
+            <p><strong>Connection Status:</strong></p>
+            <span class="badge {% if stats.connection_active %}badge-lang{% else %}badge-type{% endif %}" 
+                  style="font-size: 14px; padding: 6px 14px;">
+                {{ 'Connected' if stats.connection_active else 'Disconnected' }}
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}
