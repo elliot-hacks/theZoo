@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>📚 Documentation & Resources</h2>
+    <p style="color: var(--light-text); margin-bottom: 20px;">
+        Comprehensive documentation for theZoo Web Sandbox and the underlying theZoo malware repository.
+    </p>
+
+    <!-- Quick Links -->
+    <div class="alert alert-info">
+        <h4 style="margin-bottom: 15px; color: var(--info-color);">🔗 Quick Links</h4>
+        <div class="grid grid-2" style="gap: 10px;">
+            <div>
+                <a href="https://github.com/ytisf/theZoo" target="_blank" class="btn btn-primary btn-sm" style="width: 100%; text-align: center; margin-bottom: 8px;">
+                    🏠 theZoo GitHub Repository
+                </a>
+            </div>
+            <div>
+                <a href="https://github.com/ytisf/theZoo/blob/master/README.md" target="_blank" class="btn btn-primary btn-sm" style="width: 100%; text-align: center; margin-bottom: 8px;">
+                    📖 Main Documentation
+                </a>
+            </div>
+            <div>
+                <a href="https://github.com/ytisf/theZoo/blob/master/CONTRIBUTING.md" target="_blank" class="btn btn-primary btn-sm" style="width: 100%; text-align: center; margin-bottom: 8px;">
+                    ✍️ Contributing Guidelines
+                </a>
+            </div>
+            <div>
+                <a href="https://github.com/ytisf/theZoo/blob/master/CODE-OF-CONDUCT.md" target="_blank" class="btn btn-primary btn-sm" style="width: 100%; text-align: center; margin-bottom: 8px;">
+                    🤝 Code of Conduct
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Web Sandbox Documentation -->
+    <div class="mt-20">
+        <h3>🌐 Web Sandbox Documentation</h3>
+        
+        <h4 style="margin-top: 20px;">Overview</h4>
+        <p>
+            The theZoo Web Sandbox is a FastAPI-based web interface for browsing and interacting with 
+            the theZoo malware database. It provides the same functionality as the original CLI and 
+            GUI applications, but through a modern web browser interface.
+        </p>
+
+        <h4 style="margin-top: 20px;">Features</h4>
+        <ul style="margin-left: 20px; line-height: 1.8;">
+            <li><strong>Browse</strong> - View all malware samples with filtering options</li>
+            <li><strong>Search</strong> - Advanced search by name, type, platform, architecture, language, and tags</li>
+            <li><strong>Details</strong> - View comprehensive metadata for each malware sample</li>
+            <li><strong>Download</strong> - Download encrypted malware samples with safety warnings</li>
+            <li><strong>REST API</strong> - Programmatic access to all functionality</li>
+            <li><strong>Documentation</strong> - Built-in access to theZoo documentation</li>
+        </ul>
+
+        <h4 style="margin-top: 20px;">Installation</h4>
+        <div style="background: var(--light-bg); padding: 15px; border-radius: 4px; margin: 10px 0;">
+            <code>
+                # Install web sandbox dependencies<br>
+                cd web_sandbox<br>
+                pip install -r requirements.txt<br><br>
+                # Run the web server<br>
+                uvicorn main:app --host=127.0.0.1 --port=8000 --reload
+            </code>
+        </div>
+
+        <h4 style="margin-top: 20px;">Security Considerations</h4>
+        <div class="alert alert-warning">
+            <strong>⚠️ IMPORTANT:</strong> This web sandbox should ONLY be run in isolated environments.
+            <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li>Always bind to <code>127.0.0.1</code> (localhost) for security</li>
+                <li>Never expose to public networks</li>
+                <li>Run in isolated virtual machines</li>
+                <li>Use VPN or isolated network if remote access is needed</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- REST API Documentation -->
+    <div class="mt-20">
+        <h3>🔌 REST API Reference</h3>
+        <p>
+            The web sandbox provides a REST API for programmatic access to the malware database.
+            All endpoints return JSON responses.
+        </p>
+
+        <div class="table-container mt-15">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Description</th>
+                        <th>Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-arch">GET</span></td>
+                        <td><code>/api/stats</code></td>
+                        <td>Get database statistics</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-arch">GET</span></td>
+                        <td><code>/api/malwares</code></td>
+                        <td>List malware samples</td>
+                        <td><code>page</code>, <code>per_page</code></td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-arch">GET</span></td>
+                        <td><code>/api/malwares/{id}</code></td>
+                        <td>Get malware details</td>
+                        <td><code>mal_id</code> (path)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-arch">GET</span></td>
+                        <td><code>/api/malwares/search</code></td>
+                        <td>Search malware database</td>
+                        <td><code>q</code> (query string)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-lang">POST</span></td>
+                        <td><code>/api/update-db</code></td>
+                        <td>Update malware database</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4 style="margin-top: 20px;">API Examples</h4>
+        <div style="background: var(--light-bg); padding: 15px; border-radius: 4px; margin: 10px 0;">
+            <h5>Get Database Statistics</h5>
+            <code>curl http://localhost:8000/api/stats</code>
+        </div>
+        <div style="background: var(--light-bg); padding: 15px; border-radius: 4px; margin: 10px 0;">
+            <h5>Search for Ransomware</h5>
+            <code>curl "http://localhost:8000/api/malwares/search?q=ransomware+win32"</code>
+        </div>
+        <div style="background: var(--light-bg); padding: 15px; border-radius: 4px; margin: 10px 0;">
+            <h5>Get Malware Details</h5>
+            <code>curl http://localhost:8000/api/malwares/1</code>
+        </div>
+    </div>
+
+    <!-- theZoo Original Documentation -->
+    <div class="mt-20">
+        <h3>🦁 theZoo Original Documentation</h3>
+        <p>
+            The theZoo project is a comprehensive malware repository designed for educational and 
+            research purposes. Below are key resources from the original project.
+        </p>
+
+        <div class="grid grid-2 mt-15">
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>📖 README</h4>
+                <p>Complete guide to using theZoo, including installation, usage, and safety guidelines.</p>
+                <a href="https://github.com/ytisf/theZoo/blob/master/README.md" target="_blank" class="btn btn-sm btn-primary">
+                    Read README →
+                </a>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>⚖️ License</h4>
+                <p>GPL v3.0 license information and terms of use.</p>
+                <a href="https://github.com/ytisf/theZoo/blob/master/LICENSE.md" target="_blank" class="btn btn-sm btn-primary">
+                    View License →
+                </a>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>🤝 Code of Conduct</h4>
+                <p>Community guidelines and expected behavior standards.</p>
+                <a href="https://github.com/ytisf/theZoo/blob/master/CODE-OF-CONDUCT.md" target="_blank" class="btn btn-sm btn-primary">
+                    Read Code of Conduct →
+                </a>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>✍️ Contributing</h4>
+                <p>Guidelines for contributing to the theZoo project.</p>
+                <a href="https://github.com/ytisf/theZoo/blob/master/CONTRIBUTING.md" target="_blank" class="btn btn-sm btn-primary">
+                    Contributing Guide →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safety Guidelines -->
+    <div class="card mt-20" style="border: 2px solid var(--danger-color);">
+        <h3 style="color: var(--danger-color);">🛡️ Safety Guidelines</h3>
+        <div class="alert alert-danger">
+            <strong>⚠️ CRITICAL:</strong> theZoo contains LIVE MALWARE that can infect your system and spread to others.
+        </div>
+        <div class="grid grid-2 mt-15">
+            <div>
+                <h4>❌ NEVER</h4>
+                <ul style="margin-left: 20px; line-height: 1.8;">
+                    <li>Run on production systems</li>
+                    <li>Extract without isolation</li>
+                    <li>Share samples publicly</li>
+                    <li>Run on main operating system</li>
+                    <li>Enable network access to samples</li>
+                </ul>
+            </div>
+            <div>
+                <h4>✅ ALWAYS</h4>
+                <ul style="margin-left: 20px; line-height: 1.8;">
+                    <li>Use isolated VMs</li>
+                    <li>Disable network access</li>
+                    <li>Keep samples encrypted</li>
+                    <li>Follow safety protocols</li>
+                    <li>Use for education only</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Information -->
+    <div class="card mt-20">
+        <h3>ℹ️ Version Information</h3>
+        <div class="grid grid-2">
+            <div>
+                <p><strong>Web Sandbox Version:</strong> {{ version }}</p>
+                <p><strong>theZoo Version:</strong> {{ zoo_version }}</p>
+            </div>
+            <div>
+                <p><strong>License:</strong> {{ license }}</p>
+                <p><strong>GitHub:</strong> <a href="{{ github_url }}" target="_blank">{{ github_url }}</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

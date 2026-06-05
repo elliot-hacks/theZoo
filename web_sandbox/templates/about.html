@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>ℹ️ About theZoo Web Sandbox</h2>
+    
+    <!-- Project Overview -->
+    <div class="alert alert-info">
+        <h4 style="margin-bottom: 15px; color: var(--info-color);">Project Overview</h4>
+        <p>
+            The theZoo Web Sandbox is a modern web-based interface for the theZoo malware repository.
+            It provides the same functionality as the original CLI and GUI applications, but through
+            an accessible web browser interface. This web sandbox maintains all safety features and
+            security considerations of the original theZoo project.
+        </p>
+    </div>
+
+    <!-- Version Information -->
+    <div class="grid grid-2 mt-20">
+        <div>
+            <h4>Web Sandbox Information</h4>
+            <table style="margin-top: 10px;">
+                <tr>
+                    <td><strong>Version:</strong></td>
+                    <td>{{ version }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Framework:</strong></td>
+                    <td>FastAPI</td>
+                </tr>
+                <tr>
+                    <td><strong>Template Engine:</strong></td>
+                    <td>Jinja2</td>
+                </tr>
+                <tr>
+                    <td><strong>Database:</strong></td>
+                    <td>SQLite3</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h4>theZoo Information</h4>
+            <table style="margin-top: 10px;">
+                <tr>
+                    <td><strong>Version:</strong></td>
+                    <td>{{ zoo_version }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Authors:</strong></td>
+                    <td>{{ authors }}</td>
+                </tr>
+                <tr>
+                    <td><strong>License:</strong></td>
+                    <td>{{ license }}</td>
+                </tr>
+                <tr>
+                    <td><strong>GitHub:</strong></td>
+                    <td><a href="{{ github_url }}" target="_blank">{{ github_url }}</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- License -->
+    <div class="mt-20">
+        <h3>⚖️ License</h3>
+        <div class="alert alert-warning">
+            <p><strong>theZoo - A Live Malware Repository</strong></p>
+            <p>Copyright (C) 2015-2025, Yuval Nativ, Lahad Ludar, 5fingers</p>
+            <p style="margin-top: 10px;">
+                This program is free software: you can redistribute it and/or modify
+                it under the terms of the GNU General Public License as published by
+                the Free Software Foundation, either version 3 of the License, or
+                (at your option) any later version.
+            </p>
+            <p style="margin-top: 10px;">
+                This program is distributed in the hope that it will be useful,
+                but WITHOUT ANY WARRANTY; without even the implied warranty of
+                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+                GNU General Public License for more details.
+            </p>
+            <p style="margin-top: 10px;">
+                You should have received a copy of the GNU General Public License
+                along with this program. If not, see <a href="http://www.gnu.org/licenses/" target="_blank">http://www.gnu.org/licenses/</a>.
+            </p>
+        </div>
+        
+        <div class="alert alert-danger mt-15">
+            <strong>⚠️ Important Note:</strong>
+            <p style="margin-top: 10px;">
+                The license section above applies to the theZoo application code only. 
+                It does NOT apply to any malicious samples in theZoo's repository, which includes 
+                samples and source code, reversed or otherwise. These samples remain the property 
+                of their respective creators and are provided for educational and research purposes only.
+            </p>
+        </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mt-20">
+        <h3>⚠️ Disclaimer</h3>
+        <div class="alert alert-danger" style="border-left-width: 6px;">
+            <h4 style="color: var(--danger-color); margin-bottom: 15px;">CRITICAL SECURITY NOTICE</h4>
+            <p style="line-height: 1.8;">
+                <strong>theZoo's purpose is to allow the study of malware and enable people who are 
+                interested in malware analysis (or maybe even as a part of their job) to have access 
+                to live malware, analyse the ways they operate, and maybe even enable advanced and 
+                savvy people to block specific malware within their own environment.</strong>
+            </p>
+            <p style="margin-top: 15px; line-height: 1.8;">
+                <strong>Please remember that these are live and dangerous malware! They come encrypted 
+                and locked for a reason! Do NOT run them unless you are absolutely sure of what you 
+                are doing! They are to be used only for educational purposes (and we mean that!) !!!</strong>
+            </p>
+            <p style="margin-top: 15px; line-height: 1.8;">
+                We recommend running them in a VM which has no internet connection (or an internal 
+                virtual network if you must) and without guest additions or any equivalents. Some of 
+                them are worms and will automatically try to spread out. Running them unconstrained 
+                means that you <strong>will infect yourself or others with vicious and dangerous malware!!!</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="mt-20">
+        <h3>🚀 Key Features</h3>
+        <div class="grid grid-2">
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>🌐 Web-Based Interface</h4>
+                <p>Access theZoo through any modern web browser without installing additional software.</p>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>🔍 Advanced Search</h4>
+                <p>Search by name, type, platform, architecture, language, and tags with powerful filtering.</p>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>📊 Comprehensive Data</h4>
+                <p>View detailed metadata for each malware sample including version, author, date, and tags.</p>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>🔌 REST API</h4>
+                <p>Programmatic access to all functionality through a well-documented REST API.</p>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>🛡️ Safety First</h4>
+                <p>Multiple warning layers and safety features to ensure responsible usage.</p>
+            </div>
+            <div class="card" style="box-shadow: none; border: 1px solid var(--border-color);">
+                <h4>📚 Built-in Documentation</h4>
+                <p>Direct access to theZoo documentation, contributing guidelines, and resources.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credits -->
+    <div class="mt-20">
+        <h3>👥 Credits & Acknowledgments</h3>
+        <div class="alert alert-info">
+            <p><strong>Original theZoo Project:</strong></p>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Created by:</strong> Yuval "tisf" Nativ</li>
+                <li><strong>Maintained by:</strong> Shahak Shalev, Yuval Nativ</li>
+                <li><strong>Contributors:</strong> Lahad Ludar, 5Fingers, and many others</li>
+            </ul>
+        </div>
+        
+        <div class="alert alert-success mt-15">
+            <p><strong>Web Sandbox Development:</strong></p>
+            <p>
+                This web interface was created as a contribution to the theZoo project, 
+                providing a modern, accessible way to interact with the malware database 
+                while maintaining all safety and security features of the original application.
+            </p>
+        </div>
+    </div>
+
+    <!-- Links -->
+    <div class="mt-20 text-center">
+        <h3>🔗 Important Links</h3>
+        <div class="flex gap-10" style="justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+            <a href="https://github.com/ytisf/theZoo" target="_blank" class="btn btn-primary">
+                🏠 GitHub Repository
+            </a>
+            <a href="/documentation" class="btn btn-primary">
+                📚 Documentation
+            </a>
+            <a href="https://github.com/ytisf/theZoo/blob/master/CONTRIBUTING.md" target="_blank" class="btn btn-primary">
+                ✍️ Contributing
+            </a>
+            <a href="https://github.com/ytisf/theZoo/blob/master/CODE-OF-CONDUCT.md" target="_blank" class="btn btn-primary">
+                🤝 Code of Conduct
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Note -->
+<div class="text-center mt-20" style="color: var(--light-text); font-size: 14px;">
+    <p>
+        theZoo Web Sandbox v{{ version }} | theZoo {{ zoo_version }} | 
+        <a href="{{ github_url }}" target="_blank">GitHub</a>
+    </p>
+    <p style="margin-top: 10px;">
+        For educational and research purposes only. Always use proper safety precautions.
+    </p>
+</div>
+{% endblock %}
