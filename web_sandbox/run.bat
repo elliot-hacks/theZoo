@@ -1,19 +1,24 @@
+
 @echo off
 REM theZoo Web Sandbox - Windows Run Script
 REM This script starts the FastAPI web sandbox server
+REM Run this script from the theZoo root directory
+
+REM Get the directory where this script is located
+set SCRIPT_DIR=%~dp0
+REM Get the parent directory (theZoo root)
+set PROJECT_ROOT=%SCRIPT_DIR%..
+
+REM Change to project root
+cd /d "%PROJECT_ROOT%" || exit /b 1
 
 echo ==============================================
 echo   theZoo Web Sandbox
 echo   A web-based interface for theZoo repository
 echo ==============================================
 echo.
-
-REM Check if we're in the right directory
-if not exist "main.py" (
-    echo Error: main.py not found. Please run this script from the web_sandbox directory.
-    pause
-    exit /b 1
-)
+echo Running from: %PROJECT_ROOT%
+echo.
 
 REM Check if Python is installed
 python --version >nul 2>&1
@@ -53,7 +58,7 @@ echo Press Ctrl+C to stop the server
 echo ==============================================
 echo.
 
-REM Start the server
-python -m uvicorn main:app --host %HOST% --port %PORT% --reload
+REM Start the server (use web_sandbox.main:app since we're in project root)
+python -m uvicorn web_sandbox.main:app --host %HOST% --port %PORT% --reload
 
 pause

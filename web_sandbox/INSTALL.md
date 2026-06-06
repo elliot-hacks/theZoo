@@ -29,31 +29,35 @@
 
 ### Method 1: Using the run script (Recommended)
 
+**Important:** Run from the theZoo root directory, not from web_sandbox!
+
 **Linux/macOS:**
 ```bash
+# From theZoo root directory
 cd web_sandbox
 chmod +x run.sh
-./run.sh
+cd ..
+./web_sandbox/run.sh
 ```
 
 **Windows:**
 ```cmd
-cd web_sandbox
-run.bat
+REM From theZoo root directory
+web_sandbox\run.bat
 ```
 
 ### Method 2: Direct command
 
+**From the theZoo root directory:**
 ```bash
-cd web_sandbox
-python -m uvicorn main:app --host=127.0.0.1 --port=8000 --reload
+python -m uvicorn web_sandbox.main:app --host=127.0.0.1 --port=8000 --reload
 ```
 
 ### Method 3: Using Python directly
 
+**From the theZoo root directory:**
 ```bash
-cd web_sandbox
-python main.py
+python web_sandbox/main.py
 ```
 
 ## Accessing the Interface

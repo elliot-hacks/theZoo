@@ -2,18 +2,23 @@
 
 # theZoo Web Sandbox - Run Script
 # This script starts the FastAPI web sandbox server
+# Run this script from the theZoo root directory
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the parent directory (theZoo root)
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+# Change to project root
+cd "$PROJECT_ROOT" || exit 1
 
 echo "=============================================="
 echo "  theZoo Web Sandbox"
 echo "  A web-based interface for theZoo repository"
 echo "=============================================="
 echo ""
-
-# Check if we're in the right directory
-if [ ! -f "main.py" ]; then
-    echo "Error: main.py not found. Please run this script from the web_sandbox directory."
-    exit 1
-fi
+echo "Running from: $PROJECT_ROOT"
+echo ""
 
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
@@ -53,4 +58,4 @@ echo "=============================================="
 echo ""
 
 # Start the server
-python3 -m uvicorn main:app --host $HOST --port $PORT $([ "$RELOAD" = "true" ] && echo "--reload")
+python3 -m uvicorn web_sandbox.main:app --host $HOST --port $PORT $([ "$RELOAD" = "true" ] && echo "--reload")
